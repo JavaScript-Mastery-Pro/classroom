@@ -188,11 +188,28 @@
   }
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
+@layer components {
+  .page-title {
+    @apply text-3xl font-bold text-foreground tracking-tight;
   }
-  body {
-    @apply bg-background text-foreground;
+
+  .column-title {
+    @apply flex items-center gap-1 font-bold;
+  }
+
+  .search-field {
+    @apply relative w-full max-h-9 md:max-w-72;
+
+    .search-icon {
+      @apply absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary;
+    }
+  }
+
+  .actions-row {
+    @apply flex flex-col gap-3 sm:flex-row sm:gap-2 w-full sm:w-auto;
+  }
+
+  .intro-row {
+    @apply flex flex-col gap-5 lg:flex-row justify-between space-y-4;
   }
 }

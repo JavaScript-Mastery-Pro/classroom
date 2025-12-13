@@ -6,7 +6,6 @@ import routerProvider, {
   DocumentTitleHandler,
   UnsavedChangesNotifier,
 } from "@refinedev/react-router";
-import dataProvider from "@refinedev/simple-rest";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router";
 import "./App.css";
 import { Toaster } from "./components/refine-ui/notification/toaster";
@@ -18,6 +17,8 @@ import { Layout } from "./components/refine-ui/layout/layout";
 import SubjectsCreate from "./pages/subjects/create";
 import Dashboard from "./pages/dashboard";
 
+import { dataProvider } from "./providers/data";
+
 function App() {
   return (
     <BrowserRouter>
@@ -25,7 +26,7 @@ function App() {
         <ThemeProvider>
           <DevtoolsProvider>
             <Refine
-              dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
+              dataProvider={dataProvider}
               notificationProvider={useNotificationProvider()}
               routerProvider={routerProvider}
               options={{
