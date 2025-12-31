@@ -212,4 +212,28 @@
   .intro-row {
     @apply flex flex-col gap-5 lg:flex-row justify-between space-y-4;
   }
+
+  .class-view {
+    @apply container mx-auto pb-8 px-2 sm:px-4;
+  }
+
+  .class-form-card {
+    @apply max-w-3xl gap-2 w-full mx-auto relative overflow-hidden border shadow-sm border-foreground/20;
+  }
+
+  .upload-dropzone {
+    @apply flex flex-col items-center justify-center gap-4 min-h-40 border-2 border-dashed border-foreground/20 bg-primary/5 w-full mt-3 cursor-pointer;
+
+    button {
+      @apply absolute top-2 right-2 z-10 cursor-pointer;
+    }
+
+    .upload-prompt {
+      @apply flex flex-col sm:flex-row items-center justify-center gap-4 p-5;
+
+      div {
+        @apply text-center sm:text-left;
+      }
+    }
+  }
 }
