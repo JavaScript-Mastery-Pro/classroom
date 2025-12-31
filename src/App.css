@@ -222,18 +222,38 @@
   }
 
   .upload-dropzone {
-    @apply flex flex-col items-center justify-center gap-4 min-h-40 border-2 border-dashed border-foreground/20 bg-primary/5 w-full mt-3 cursor-pointer;
-
-    button {
-      @apply absolute top-2 right-2 z-10 cursor-pointer;
-    }
+    @apply flex flex-col items-center justify-center gap-4 min-h-40 border-2 border-dashed border-foreground/20 bg-primary/5 w-full mt-3 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed rounded-md;
 
     .upload-prompt {
       @apply flex flex-col sm:flex-row items-center justify-center gap-4 p-5;
 
+      .icon {
+        @apply size-10 text-orange-600;
+      }
+
       div {
         @apply text-center sm:text-left;
+
+        :first-child {
+          @apply text-sm font-bold text-orange-600 mb-1;
+        }
+
+        :last-child {
+          @apply text-xs text-foreground/60;
+        }
       }
+    }
+  }
+
+  .upload-preview {
+    @apply relative w-full;
+
+    img {
+      @apply size-full object-cover rounded-md;
+    }
+
+    button {
+      @apply absolute top-2 right-3 z-10 cursor-pointer;
     }
   }
 }

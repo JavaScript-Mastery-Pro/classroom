@@ -45,3 +45,14 @@ declare global {
     };
   }
 }
+
+export interface UploadWidgetValue {
+  url: string;
+  publicId: string;
+}
+
+export interface UploadWidgetProps {
+  value?: UploadWidgetValue | null;
+  onChange?: (value: UploadWidgetValue | null) => void;
+  disabled?: boolean;
+}

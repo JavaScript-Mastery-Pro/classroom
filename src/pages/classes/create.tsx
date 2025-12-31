@@ -1,6 +1,5 @@
 import { useForm } from "@refinedev/react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -53,9 +52,10 @@ const ClassesCreate = () => {
 
   const {
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
     control,
   } = form;
+  const bannerPublicId = form.watch("bannerCldPubId");
 
   const onSubmit = async () => {
     try {
@@ -114,13 +114,50 @@ const ClassesCreate = () => {
           <CardContent className="mt-7">
             <Form {...form}>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                <div className="space-y-3">
-                  <Label>
-                    Banner Image <span className="text-orange-600">*</span>
-                  </Label>
-
-                  <UploadWidget />
-                </div>
+                <FormField
+                  control={control}
+                  name="bannerUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        Banner Image <span className="text-orange-600">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <UploadWidget
+                          value={
+                            field.value
+                              ? {
+                                  url: field.value,
+                                  publicId: bannerPublicId ?? "",
+                                }
+                              : null
+                          }
+                          onChange={(file) => {
+                            if (file) {
+                              field.onChange(file.url);
+                              form.setValue("bannerCldPubId", file.publicId, {
+                                shouldValidate: true,
+                                shouldDirty: true,
+                              });
+                            } else {
+                              field.onChange("");
+                              form.setValue("bannerCldPubId", "", {
+                                shouldValidate: true,
+                                shouldDirty: true,
+                              });
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                      {errors.bannerCldPubId && !errors.bannerUrl && (
+                        <p className="text-destructive text-sm">
+                          {errors.bannerCldPubId.message?.toString()}
+                        </p>
+                      )}
+                    </FormItem>
+                  )}
+                />
 
                 <FormField
                   control={control}
@@ -187,7 +224,7 @@ const ClassesCreate = () => {
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}
-                          value={field.value}
+                          value={field.value?.toString()}
                         >
                           <FormControl>
                             <SelectTrigger className="w-full">
@@ -217,10 +254,13 @@ const ClassesCreate = () => {
                     name="capacity"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Capacity</FormLabel>
+                        <FormLabel>
+                          Capacity <span className="text-orange-600">*</span>
+                        </FormLabel>
                         <FormControl>
                           <Input
                             type="number"
+                            min={1}
                             placeholder="30"
                             onChange={(e) => {
                               const value = e.target.value;
@@ -270,7 +310,9 @@ const ClassesCreate = () => {
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description</FormLabel>
+                      <FormLabel>
+                        Description <span className="text-orange-600">*</span>
+                      </FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Brief description about the class"
