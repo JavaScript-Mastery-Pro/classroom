@@ -17,6 +17,10 @@ export type ListResponse<T = unknown> = {
   };
 };
 
+export type CreateResponse<T = unknown> = {
+  data?: T;
+};
+
 declare global {
   interface CloudinaryUploadWidgetResults {
     event: string;
@@ -56,3 +60,21 @@ export interface UploadWidgetProps {
   onChange?: (value: UploadWidgetValue | null) => void;
   disabled?: boolean;
 }
+
+export enum UserRole {
+  STUDENT = "student",
+  TEACHER = "teacher",
+  ADMIN = "admin",
+}
+
+export type User = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  email: string;
+  name: string;
+  role: UserRole;
+  image?: string;
+  imageCldPubId?: string;
+  department?: string;
+};
