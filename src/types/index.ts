@@ -21,6 +21,10 @@ export type CreateResponse<T = unknown> = {
   data?: T;
 };
 
+export type GetOneResponse<T = unknown> = {
+  data?: T;
+};
+
 declare global {
   interface CloudinaryUploadWidgetResults {
     event: string;
@@ -77,4 +81,33 @@ export type User = {
   image?: string;
   imageCldPubId?: string;
   department?: string;
+};
+
+export type Schedule = {
+  day: string;
+  startTime: string;
+  endTime: string;
+};
+
+export type Department = {
+  id: number;
+  name: string;
+  description: string;
+};
+
+export type ClassDetails = {
+  id: number;
+  name: string;
+  description: string;
+  status: "active" | "inactive";
+  capacity: number;
+  courseCode: string;
+  courseName: string;
+  bannerUrl?: string;
+  bannerCldPubId?: string;
+  subject?: Subject;
+  teacher?: User;
+  department?: Department;
+  schedules: Schedule[];
+  inviteCode?: string;
 };
