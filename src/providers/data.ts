@@ -22,12 +22,15 @@ const options: CreateDataProviderOptions = {
         const field = "field" in filter ? filter.field : "";
         const value = String(filter.value);
 
+        if (field === "role") {
+          params.role = value;
+        }
+
         if (resource === "departments") {
           if (field === "name" || field === "code") params.search = value;
         }
 
         if (resource === "users") {
-          if (field === "role") params.role = value;
           if (field === "search" || field === "name" || field === "email") {
             params.search = value;
           }

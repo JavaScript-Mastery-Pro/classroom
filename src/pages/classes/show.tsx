@@ -51,13 +51,22 @@ const ClassesShow = () => {
 
       <div className="banner">
         {classDetails.bannerUrl ? (
-          <AdvancedImage
-            cldImg={bannerPhoto(
-              classDetails.bannerCldPubId ?? "",
-              classDetails.name
-            )}
-            alt="Class Banner"
-          />
+          classDetails.bannerUrl.includes("res.cloudinary.com") &&
+          classDetails.bannerCldPubId ? (
+            <AdvancedImage
+              cldImg={bannerPhoto(
+                classDetails.bannerCldPubId ?? "",
+                classDetails.name
+              )}
+              alt="Class Banner"
+            />
+          ) : (
+            <img
+              src={classDetails.bannerUrl}
+              alt={classDetails.name}
+              loading="lazy"
+            />
+          )
         ) : (
           <div className="placeholder" />
         )}
