@@ -27,6 +27,7 @@ import { authProvider } from "./providers/auth";
 import { Login } from "./pages/login";
 import { Register } from "./pages/register";
 import DepartmentsList from "./pages/departments/list";
+import DepartmentsCreate from "./pages/departments/create";
 import DepartmentShow from "./pages/departments/show";
 import FacultyList from "./pages/faculty/list";
 import FacultyShow from "./pages/faculty/show";
@@ -70,6 +71,7 @@ function App() {
                   name: "departments",
                   list: "/departments",
                   show: "/departments/show/:id",
+                  create: "/departments/create",
                   meta: {
                     label: "Departments",
                     icon: <Building2 />,
@@ -127,6 +129,7 @@ function App() {
 
                   <Route path="departments">
                     <Route index element={<DepartmentsList />} />
+                    <Route path="create" element={<DepartmentsCreate />} />
                     <Route path="show/:id" element={<DepartmentShow />} />
                   </Route>
 

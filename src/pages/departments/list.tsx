@@ -9,6 +9,7 @@ import { ListView } from "@/components/refine-ui/views/list-view";
 import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb";
 import { DataTable } from "@/components/refine-ui/data-table/data-table";
 import { ShowButton } from "@/components/refine-ui/buttons/show";
+import { CreateButton } from "@/components/refine-ui/buttons/create";
 
 type DepartmentListItem = {
   id: number;
@@ -148,6 +149,7 @@ const DepartmentsList = () => {
               onChange={(event) => setSearchQuery(event.target.value)}
             />
           </div>
+          <CreateButton resource="departments" />
         </div>
       </div>
 
