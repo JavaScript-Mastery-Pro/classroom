@@ -276,7 +276,7 @@ const DepartmentShow = () => {
     refineCoreProps: {
       resource: `departments/${departmentId}/subjects`,
       pagination: {
-        pageSize: 3,
+        pageSize: 10,
         mode: "server",
       },
     },
@@ -287,7 +287,7 @@ const DepartmentShow = () => {
     refineCoreProps: {
       resource: `departments/${departmentId}/classes`,
       pagination: {
-        pageSize: 3,
+        pageSize: 10,
         mode: "server",
       },
     },
@@ -298,7 +298,7 @@ const DepartmentShow = () => {
     refineCoreProps: {
       resource: `departments/${departmentId}/users`,
       pagination: {
-        pageSize: 3,
+        pageSize: 10,
         mode: "server",
       },
       filters: {
@@ -318,7 +318,7 @@ const DepartmentShow = () => {
     refineCoreProps: {
       resource: `departments/${departmentId}/users`,
       pagination: {
-        pageSize: 3,
+        pageSize: 10,
         mode: "server",
       },
       filters: {

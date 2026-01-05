@@ -1,22 +1,104 @@
+import { AdvancedImage } from "@cloudinary/react";
+import { useShow } from "@refinedev/core";
+import { useTable } from "@refinedev/react-table";
+import { ColumnDef } from "@tanstack/react-table";
+import { useMemo } from "react";
+import { useParams } from "react-router";
+
+import { DataTable } from "@/components/refine-ui/data-table/data-table";
+import { ShowButton } from "@/components/refine-ui/buttons/show";
 import {
   ShowView,
   ShowViewHeader,
 } from "@/components/refine-ui/views/show-view";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { bannerPhoto } from "@/lib/cloudinary";
 import { ClassDetails } from "@/types";
-import { AdvancedImage } from "@cloudinary/react";
-import { useShow } from "@refinedev/core";
+
+type ClassUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  image?: string | null;
+};
 
 const ClassesShow = () => {
+  const { id } = useParams();
+  const classId = id ?? "";
+
   const { query } = useShow<ClassDetails>({
     resource: "classes",
   });
 
   const classDetails = query.data?.data;
+
+  const studentColumns = useMemo<ColumnDef<ClassUser>[]>(
+    () => [
+      {
+        id: "name",
+        accessorKey: "name",
+        size: 240,
+        header: () => <p className="column-title">Student</p>,
+        cell: ({ row }) => (
+          <div className="flex items-center gap-2">
+            <Avatar className="size-7">
+              {row.original.image && (
+                <AvatarImage src={row.original.image} alt={row.original.name} />
+              )}
+              <AvatarFallback>{getInitials(row.original.name)}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col truncate">
+              <span className="truncate">{row.original.name}</span>
+              <span className="text-xs text-muted-foreground truncate">
+                {row.original.email}
+              </span>
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: "details",
+        size: 140,
+        header: () => <p className="column-title">Details</p>,
+        cell: ({ row }) => (
+          <ShowButton
+            resource="users"
+            recordItemId={row.original.id}
+            variant="outline"
+            size="sm"
+          >
+            View
+          </ShowButton>
+        ),
+      },
+    ],
+    []
+  );
+
+  const studentsTable = useTable<ClassUser>({
+    columns: studentColumns,
+    refineCoreProps: {
+      resource: `classes/${classId}/users`,
+      pagination: {
+        pageSize: 3,
+        mode: "server",
+      },
+      filters: {
+        permanent: [
+          {
+            field: "role",
+            operator: "eq",
+            value: "student",
+          },
+        ],
+      },
+    },
+  });
 
   if (query.isLoading || query.isError || !classDetails) {
     return (
@@ -46,7 +128,7 @@ const ClassesShow = () => {
   )}`;
 
   return (
-    <ShowView className="class-view class-show">
+    <ShowView className="class-view class-show space-y-6">
       <ShowViewHeader resource="classes" title="Class Details" />
 
       <div className="banner">
@@ -153,8 +235,26 @@ const ClassesShow = () => {
           Join Class
         </Button>
       </Card>
+
+      <Card className="hover:shadow-md transition-shadow">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle>Enrolled Students</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <DataTable table={studentsTable} paginationVariant="simple" />
+        </CardContent>
+      </Card>
     </ShowView>
   );
+};
+
+const getInitials = (name = "") => {
+  const parts = name.trim().split(" ").filter(Boolean);
+  if (parts.length === 0) return "";
+  if (parts.length === 1) return parts[0][0]?.toUpperCase() ?? "";
+  return `${parts[0][0] ?? ""}${
+    parts[parts.length - 1][0] ?? ""
+  }`.toUpperCase();
 };
 
 export default ClassesShow;
