@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { ListView } from "@/components/refine-ui/views/list-view";
 import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb";
 import { DataTable } from "@/components/refine-ui/data-table/data-table";
+import { ShowButton } from "@/components/refine-ui/buttons/show";
 
 type DepartmentListItem = {
   id: number;
@@ -71,6 +72,21 @@ const DepartmentsList = () => {
             <span className="text-muted-foreground">No description</span>
           );
         },
+      },
+      {
+        id: "details",
+        size: 140,
+        header: () => <p className="column-title">Details</p>,
+        cell: ({ row }) => (
+          <ShowButton
+            resource="departments"
+            recordItemId={row.original.id}
+            variant="outline"
+            size="sm"
+          >
+            View
+          </ShowButton>
+        ),
       },
     ],
     []
