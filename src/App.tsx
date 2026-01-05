@@ -16,6 +16,7 @@ import { BookOpen, Building2, GraduationCap, Home, Users } from "lucide-react";
 import SubjectsList from "./pages/subjects/list";
 import { Layout } from "./components/refine-ui/layout/layout";
 import SubjectsCreate from "./pages/subjects/create";
+import SubjectsShow from "./pages/subjects/show";
 import Dashboard from "./pages/dashboard";
 
 import { dataProvider } from "./providers/data";
@@ -58,6 +59,7 @@ function App() {
                   name: "subjects",
                   list: "/subjects",
                   create: "/subjects/create",
+                  show: "/subjects/show/:id",
                   meta: {
                     label: "Subjects",
                     icon: <BookOpen />,
@@ -118,6 +120,7 @@ function App() {
                   <Route path="subjects">
                     <Route index element={<SubjectsList />} />
                     <Route path="create" element={<SubjectsCreate />} />
+                    <Route path="show/:id" element={<SubjectsShow />} />
                   </Route>
 
                   <Route path="departments">
