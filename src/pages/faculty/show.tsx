@@ -104,28 +104,38 @@ const FacultyShow = () => {
               <p className="text-sm text-muted-foreground">{user.email}</p>
             </div>
           </div>
-          {isTeacher && "totals" in details && (
-            <div className="flex flex-wrap gap-2">
-              <Badge variant="outline">{details.totals.classes} classes</Badge>
-              <Badge variant="outline">
-                {details.totals.subjects} subjects
-              </Badge>
-              <Badge variant="outline">
-                {details.totals.departments} departments
-              </Badge>
-            </div>
-          )}
-          {isStudent && "totals" in details && (
-            <div className="flex flex-wrap gap-2">
-              <Badge variant="outline">
-                {details.totals.enrollments} enrollments
-              </Badge>
-              <Badge variant="outline">{details.totals.classes} classes</Badge>
-              <Badge variant="outline">
-                {details.totals.subjects} subjects
-              </Badge>
-            </div>
-          )}
+          {isTeacher &&
+            "totals" in details &&
+            "classes" in details.totals &&
+            "subjects" in details.totals &&
+            "departments" in details.totals && (
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="outline">
+                  {details.totals.classes} classes
+                </Badge>
+                <Badge variant="outline">
+                  {details.totals.subjects} subjects
+                </Badge>
+                <Badge variant="outline">
+                  {details.totals.departments} departments
+                </Badge>
+              </div>
+            )}
+          {isStudent &&
+            "totals" in details &&
+            "enrollments" in details.totals && (
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="outline">
+                  {details.totals.enrollments} enrollments
+                </Badge>
+                <Badge variant="outline">
+                  {details.totals.classes} classes
+                </Badge>
+                <Badge variant="outline">
+                  {details.totals.subjects} subjects
+                </Badge>
+              </div>
+            )}
         </CardContent>
       </Card>
 
@@ -153,28 +163,36 @@ const FacultyShow = () => {
                     </TableCell>
                   </TableRow>
                 )}
-                {details.classes.map((classItem) => (
-                  <TableRow key={classItem.id}>
-                    <TableCell>{classItem.name}</TableCell>
-                    <TableCell>
-                      {classItem.subject?.name ?? "Unassigned"}
-                    </TableCell>
-                    <TableCell>
-                      {classItem.department?.name ?? "Unassigned"}
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={
-                          classItem.status === "active"
-                            ? "default"
-                            : "secondary"
-                        }
-                      >
-                        {classItem.status ?? "unknown"}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {details.classes.map(
+                  (classItem: {
+                    id: number;
+                    name: string;
+                    subject?: Subject;
+                    department?: Department;
+                    status?: "active" | "inactive";
+                  }) => (
+                    <TableRow key={classItem.id}>
+                      <TableCell>{classItem.name}</TableCell>
+                      <TableCell>
+                        {classItem.subject?.name ?? "Unassigned"}
+                      </TableCell>
+                      <TableCell>
+                        {classItem.department?.name ?? "Unassigned"}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={
+                            classItem.status === "active"
+                              ? "default"
+                              : "secondary"
+                          }
+                        >
+                          {classItem.status ?? "unknown"}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  )
+                )}
               </TableBody>
             </Table>
           </CardContent>

@@ -35,7 +35,10 @@ type EnrollFormValues = z.infer<typeof enrollSchema>;
 
 const EnrollmentsCreate = () => {
   const navigate = useNavigate();
-  const { mutateAsync: createEnrollment, isPending } = useCreate();
+  const {
+    mutateAsync: createEnrollment,
+    mutation: { isPending },
+  } = useCreate();
   const { data: currentUser } = useGetIdentity<User>();
 
   const { query: classesQuery } = useList<ClassDetails>({
@@ -55,6 +58,8 @@ const EnrollmentsCreate = () => {
     },
   });
 
+  const selectedClassId = form.watch("classId");
+
   const onSubmit = async (values: EnrollFormValues) => {
     if (!currentUser?.id) return;
 
@@ -72,6 +77,13 @@ const EnrollmentsCreate = () => {
       },
     });
   };
+
+  const isSubmitDisabled =
+    isPending ||
+    classesLoading ||
+    !currentUser?.id ||
+    !classes.length ||
+    !selectedClassId;
 
   return (
     <CreateView className="class-view">
@@ -96,7 +108,10 @@ const EnrollmentsCreate = () => {
 
           <CardContent className="mt-7">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-5"
+              >
                 <FormField
                   control={form.control}
                   name="classId"
@@ -106,9 +121,7 @@ const EnrollmentsCreate = () => {
                         Class <span className="text-orange-600">*</span>
                       </FormLabel>
                       <Select
-                        onValueChange={(value) =>
-                          field.onChange(Number(value))
-                        }
+                        onValueChange={(value) => field.onChange(Number(value))}
                         value={field.value ? String(field.value) : ""}
                         disabled={classesLoading}
                       >
@@ -143,7 +156,7 @@ const EnrollmentsCreate = () => {
                   </FormControl>
                 </FormItem>
 
-                <Button type="submit" size="lg" disabled={isPending}>
+                <Button type="submit" size="lg" disabled={isSubmitDisabled}>
                   {isPending ? "Enrolling..." : "Enroll"}
                 </Button>
               </form>

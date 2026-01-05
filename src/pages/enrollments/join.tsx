@@ -28,7 +28,10 @@ type JoinFormValues = z.infer<typeof joinSchema>;
 
 const EnrollmentsJoin = () => {
   const navigate = useNavigate();
-  const { mutateAsync: joinEnrollment, isPending } = useCreate();
+  const {
+    mutateAsync: joinEnrollment,
+    mutation: { isPending },
+  } = useCreate();
   const { data: currentUser } = useGetIdentity<User>();
 
   const form = useForm<JoinFormValues>({
@@ -37,6 +40,8 @@ const EnrollmentsJoin = () => {
       inviteCode: "",
     },
   });
+
+  const inviteCode = form.watch("inviteCode");
 
   const onSubmit = async (values: JoinFormValues) => {
     if (!currentUser?.id) return;
@@ -55,6 +60,8 @@ const EnrollmentsJoin = () => {
       },
     });
   };
+
+  const isSubmitDisabled = isPending || !currentUser?.id || !inviteCode;
 
   return (
     <CreateView className="class-view">
@@ -79,7 +86,10 @@ const EnrollmentsJoin = () => {
 
           <CardContent className="mt-7">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-5"
+              >
                 <FormField
                   control={form.control}
                   name="inviteCode"
@@ -106,7 +116,7 @@ const EnrollmentsJoin = () => {
                   </FormControl>
                 </FormItem>
 
-                <Button type="submit" size="lg" disabled={isPending}>
+                <Button type="submit" size="lg" disabled={isSubmitDisabled}>
                   {isPending ? "Joining..." : "Join Class"}
                 </Button>
               </form>
