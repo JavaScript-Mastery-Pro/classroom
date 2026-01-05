@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "@refinedev/react-hook-form";
-import { useBack } from "@refinedev/core";
+import { useBack, type BaseRecord, type HttpError } from "@refinedev/core";
 import * as z from "zod";
 
 import { CreateView } from "@/components/refine-ui/views/create-view";
@@ -32,7 +32,7 @@ type DepartmentFormValues = z.infer<typeof departmentSchema>;
 const DepartmentsCreate = () => {
   const back = useBack();
 
-  const form = useForm<DepartmentFormValues>({
+  const form = useForm<BaseRecord, HttpError, DepartmentFormValues>({
     resolver: zodResolver(departmentSchema),
     refineCoreProps: {
       resource: "departments",

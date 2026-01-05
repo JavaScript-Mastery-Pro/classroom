@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "@refinedev/react-hook-form";
-import { useBack, useList } from "@refinedev/core";
+import { useBack, useList, type BaseRecord, type HttpError } from "@refinedev/core";
 import * as z from "zod";
 
 import { CreateView } from "@/components/refine-ui/views/create-view";
@@ -46,7 +46,7 @@ type SubjectFormValues = z.infer<typeof subjectCreateSchema>;
 const SubjectsCreate = () => {
   const back = useBack();
 
-  const form = useForm<SubjectFormValues>({
+  const form = useForm<BaseRecord, HttpError, SubjectFormValues>({
     resolver: zodResolver(subjectCreateSchema),
     refineCoreProps: {
       resource: "subjects",
